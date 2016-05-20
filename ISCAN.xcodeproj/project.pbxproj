@@ -6,9 +6,78 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		E13987571CEF5F9700713832 /* Install */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = E13987581CEF5F9700713832 /* Build configuration list for PBXAggregateTarget "Install" */;
+			buildPhases = (
+				E139875C1CEF5FB200713832 /* CopyFiles */,
+			);
+			dependencies = (
+				E139875B1CEF5FAC00713832 /* PBXTargetDependency */,
+			);
+			name = Install;
+			productName = Install;
+		};
+		E139875E1CEF5FE200713832 /* Everything */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = E139875F1CEF5FE200713832 /* Build configuration list for PBXAggregateTarget "Everything" */;
+			buildPhases = (
+			);
+			dependencies = (
+				E13987621CEF5FEC00713832 /* PBXTargetDependency */,
+			);
+			name = Everything;
+			productName = Everything;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		E13987561CEF5E5200713832 /* ISCANPlugin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E13987551CEF5E5200713832 /* ISCANPlugin.cpp */; };
+		E139875D1CEF5FBD00713832 /* ISCAN.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = E13987471CEF5D7F00713832 /* ISCAN.bundle */; };
+		E13987661CEF628F00713832 /* MWorksCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E13987651CEF628F00713832 /* MWorksCore.framework */; };
+		E13987691CEF62DF00713832 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E13987681CEF62DF00713832 /* libboost_system.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E139875A1CEF5FAC00713832 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E139873F1CEF5D7F00713832 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E13987461CEF5D7F00713832;
+			remoteInfo = ISCAN;
+		};
+		E13987611CEF5FEC00713832 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E139873F1CEF5D7F00713832 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E13987571CEF5F9700713832;
+			remoteInfo = Install;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E139875C1CEF5FB200713832 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(MW_PLUGINS_DIR)";
+			dstSubfolderSpec = 0;
+			files = (
+				E139875D1CEF5FBD00713832 /* ISCAN.bundle in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		E13987471CEF5D7F00713832 /* ISCAN.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ISCAN.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		E139874A1CEF5D7F00713832 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E13987511CEF5E0500713832 /* Development.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
+		E13987521CEF5E0500713832 /* WARNING.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WARNING.txt; sourceTree = "<group>"; };
+		E13987551CEF5E5200713832 /* ISCANPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ISCANPlugin.cpp; sourceTree = "<group>"; };
+		E13987641CEF61CB00713832 /* ISCAN-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ISCAN-Prefix.pch"; sourceTree = "<group>"; };
+		E13987651CEF628F00713832 /* MWorksCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MWorksCore.framework; path = /Library/Frameworks/MWorksCore.framework; sourceTree = "<absolute>"; };
+		E13987681CEF62DF00713832 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = "/Library/Application Support/MWorks/Developer/lib/libboost_system.a"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -16,6 +85,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E13987691CEF62DF00713832 /* libboost_system.a in Frameworks */,
+				E13987661CEF628F00713832 /* MWorksCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -25,7 +96,9 @@
 		E139873E1CEF5D7F00713832 = {
 			isa = PBXGroup;
 			children = (
+				E13987501CEF5DBC00713832 /* External Config */,
 				E13987491CEF5D7F00713832 /* ISCAN */,
+				E13987671CEF62A300713832 /* Frameworks */,
 				E13987481CEF5D7F00713832 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,9 +114,38 @@
 		E13987491CEF5D7F00713832 /* ISCAN */ = {
 			isa = PBXGroup;
 			children = (
-				E139874A1CEF5D7F00713832 /* Info.plist */,
+				E13987551CEF5E5200713832 /* ISCANPlugin.cpp */,
+				E13987631CEF617E00713832 /* Supporting Files */,
 			);
 			path = ISCAN;
+			sourceTree = "<group>";
+		};
+		E13987501CEF5DBC00713832 /* External Config */ = {
+			isa = PBXGroup;
+			children = (
+				E13987511CEF5E0500713832 /* Development.xcconfig */,
+				E13987521CEF5E0500713832 /* WARNING.txt */,
+			);
+			name = "External Config";
+			path = "/Library/Application Support/MWorks/Developer/Xcode";
+			sourceTree = "<absolute>";
+		};
+		E13987631CEF617E00713832 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E139874A1CEF5D7F00713832 /* Info.plist */,
+				E13987641CEF61CB00713832 /* ISCAN-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E13987671CEF62A300713832 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E13987651CEF628F00713832 /* MWorksCore.framework */,
+				E13987681CEF62DF00713832 /* libboost_system.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -78,6 +180,12 @@
 					E13987461CEF5D7F00713832 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
+					E13987571CEF5F9700713832 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					E139875E1CEF5FE200713832 = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
 				};
 			};
 			buildConfigurationList = E13987421CEF5D7F00713832 /* Build configuration list for PBXProject "ISCAN" */;
@@ -93,6 +201,8 @@
 			projectRoot = "";
 			targets = (
 				E13987461CEF5D7F00713832 /* ISCAN */,
+				E13987571CEF5F9700713832 /* Install */,
+				E139875E1CEF5FE200713832 /* Everything */,
 			);
 		};
 /* End PBXProject section */
@@ -112,21 +222,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E13987561CEF5E5200713832 /* ISCANPlugin.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		E139875B1CEF5FAC00713832 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E13987461CEF5D7F00713832 /* ISCAN */;
+			targetProxy = E139875A1CEF5FAC00713832 /* PBXContainerItemProxy */;
+		};
+		E13987621CEF5FEC00713832 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E13987571CEF5F9700713832 /* Install */;
+			targetProxy = E13987611CEF5FEC00713832 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		E139874B1CEF5D7F00713832 /* Debug */ = {
+		E139874B1CEF5D7F00713832 /* Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E13987511CEF5E0500713832 /* Development.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -136,94 +256,43 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
 			};
-			name = Debug;
+			name = Development;
 		};
-		E139874C1CEF5D7F00713832 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = macosx;
-			};
-			name = Release;
-		};
-		E139874E1CEF5D7F00713832 /* Debug */ = {
+		E139874E1CEF5D7F00713832 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ISCAN/ISCAN-Prefix.pch";
 				INFOPLIST_FILE = ISCAN/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.mworks-project.ISCAN";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = bundle;
 			};
-			name = Debug;
+			name = Development;
 		};
-		E139874F1CEF5D7F00713832 /* Release */ = {
+		E13987591CEF5F9700713832 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = ISCAN/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.mworks-project.ISCAN";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				WRAPPER_EXTENSION = bundle;
 			};
-			name = Release;
+			name = Development;
+		};
+		E13987601CEF5FE200713832 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Development;
 		};
 /* End XCBuildConfiguration section */
 
@@ -231,19 +300,34 @@
 		E13987421CEF5D7F00713832 /* Build configuration list for PBXProject "ISCAN" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E139874B1CEF5D7F00713832 /* Debug */,
-				E139874C1CEF5D7F00713832 /* Release */,
+				E139874B1CEF5D7F00713832 /* Development */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Development;
 		};
 		E139874D1CEF5D7F00713832 /* Build configuration list for PBXNativeTarget "ISCAN" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E139874E1CEF5D7F00713832 /* Debug */,
-				E139874F1CEF5D7F00713832 /* Release */,
+				E139874E1CEF5D7F00713832 /* Development */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		E13987581CEF5F9700713832 /* Build configuration list for PBXAggregateTarget "Install" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E13987591CEF5F9700713832 /* Development */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		E139875F1CEF5FE200713832 /* Build configuration list for PBXAggregateTarget "Everything" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E13987601CEF5FE200713832 /* Development */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
 		};
 /* End XCConfigurationList section */
 	};
