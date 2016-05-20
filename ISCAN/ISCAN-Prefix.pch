@@ -9,7 +9,17 @@
 #ifndef ISCAN_Prefix_pch
 #define ISCAN_Prefix_pch
 
+#include <sys/ioctl.h>
+#include <termios.h>
+
 #ifdef __cplusplus
+
+#include <atomic>
+#include <mutex>
+#include <thread>
+
+#include <boost/endian/arithmetic.hpp>
+#include <boost/scope_exit.hpp>
 
 #include <MWorksCore/IODevice.h>
 #include <MWorksCore/Plugin.h>
