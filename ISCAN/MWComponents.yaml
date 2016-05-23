@@ -1,0 +1,43 @@
+---
+
+
+name: ISCAN Device
+signature: iodevice/iscan
+isa: IODevice
+icon: smallIOFolder
+description: |
+    Interface to an `ISCAN <http://www.iscaninc.com/>`_ eye tracking system.
+
+    On the device, the serial I/O baud rate must be set to 115200, and a
+    binary output format must be selected.
+parameters: 
+  - 
+    name: serial_port
+    required: yes
+    example: /dev/tty.usbserial-FTH1RRH5
+  - 
+    name: output_01
+  - 
+    name: output_02
+  - 
+    name: output_03
+  - 
+    name: output_04
+  - 
+    name: output_05
+  - 
+    name: output_06
+  - 
+    name: start_command
+    default: 128
+    description: >
+        Command byte used to start recording.  On some systems, the correct
+        value may be 132.
+  - 
+    name: stop_command
+    default: 129
+    description: >
+        Command byte used to stop recording.  On some systems, the correct
+        value may be 136.
+
+

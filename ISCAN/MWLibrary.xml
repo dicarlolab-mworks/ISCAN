@@ -1,0 +1,30 @@
+<MWElements>
+
+  <MWElement name="ISCAN Device">
+    <match_signature>iodevice[@type="iscan"]</match_signature>
+    
+    <isa>IODevice</isa>
+
+    <icon>smallIOFolder</icon>
+    
+    <description>
+Interface to an ISCAN eye tracking system
+    </description>
+    
+    <code>
+      <iodevice type="iscan"
+                tag="ISCAN Device"
+                serial_port=""
+                output_01=""
+                output_02=""
+                output_03=""
+                output_04=""
+                output_05=""
+                output_06=""
+                start_command="128"
+                stop_command="129"
+                />
+    </code>
+  </MWElement>
+
+</MWElements>
