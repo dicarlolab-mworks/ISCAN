@@ -32,6 +32,8 @@ public:
 private:
     static std::string getOutputParameterName(std::size_t outputNumber);
     
+    bool connect();
+    void disconnect();
     bool sendCommand(std::uint8_t cmd);
     void receiveData();
     

@@ -65,19 +65,26 @@ ISCANDevice::~ISCANDevice() {
             merror(M_IODEVICE_MESSAGE_DOMAIN, "Serial port drain failed: %s", strerror(errno));
         }
         
-        // Restore original options
-        if (-1 == tcsetattr(fd, TCSANOW, &origAttrs)) {
-            merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot restore previous serial port attributes: %s", strerror(errno));
-        }
-        
-        if (-1 == ::close(fd)) {
-            merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot close serial port: %s", strerror(errno));
-        }
+        disconnect();
     }
 }
 
 
 bool ISCANDevice::initialize() {
+    if (!connect()) {
+        return false;
+    }
+    
+    continueReceivingData.test_and_set();
+    receiveDataThread = std::thread([this]() {
+        receiveData();
+    });
+    
+    return true;
+}
+
+
+bool ISCANDevice::connect() {
     // Open the serial port read/write, with no controlling terminal, and don't wait for a connection.
     // The O_NONBLOCK flag also causes subsequent I/O on the device to be non-blocking.
     if (-1 == (fd = ::open(serialPort.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK))) {
@@ -131,12 +138,21 @@ bool ISCANDevice::initialize() {
     
     shouldClose = false;
     
-    continueReceivingData.test_and_set();
-    receiveDataThread = std::thread([this]() {
-        receiveData();
-    });
-    
     return true;
+}
+
+
+void ISCANDevice::disconnect() {
+    // Restore original options
+    if (-1 == tcsetattr(fd, TCSANOW, &origAttrs)) {
+        merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot restore previous serial port attributes: %s", strerror(errno));
+    }
+    
+    if (-1 == ::close(fd)) {
+        merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot close serial port: %s", strerror(errno));
+    }
+    
+    fd = -1;
 }
 
 
@@ -196,6 +212,13 @@ void ISCANDevice::receiveData() {
         if (-1 == result) {
             
             merror(M_IODEVICE_MESSAGE_DOMAIN, "Read from ISCAN device failed: %s", strerror(errnoCopy));
+            
+            mprintf(M_IODEVICE_MESSAGE_DOMAIN, "Attempting to reconnect to ISCAN device...");
+            disconnect();
+            if (!connect()) {
+                merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot reconnect to ISCAN device");
+                return;
+            }
             
         } else if (result > 0) {
             
