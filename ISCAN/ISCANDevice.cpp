@@ -27,7 +27,7 @@ void ISCANDevice::describeComponent(ComponentInfo &info) {
     
     info.setSignature("iodevice/iscan");
     
-    info.addParameter(SERIAL_PORT);
+    info.addParameter(SERIAL_PORT, false);
     for (std::size_t outputNumber = 0; outputNumber < maxNumOutputs; outputNumber++) {
         info.addParameter(getOutputParameterName(outputNumber), false);
     }
@@ -38,10 +38,9 @@ void ISCANDevice::describeComponent(ComponentInfo &info) {
 
 ISCANDevice::ISCANDevice(const ParameterValueMap &parameters) :
     IODevice(parameters),
-    serialPort(parameters[SERIAL_PORT].str()),
+    path(parameters[SERIAL_PORT].str()),
     startCommand(parameters[START_COMMAND]),
     stopCommand(parameters[STOP_COMMAND]),
-    fd(-1),
     running(false)
 {
     for (std::size_t outputNumber = 0; outputNumber < maxNumOutputs; outputNumber++) {
@@ -58,20 +57,11 @@ ISCANDevice::~ISCANDevice() {
         continueReceivingData.clear();
         receiveDataThread.join();
     }
-    
-    if (-1 != fd) {
-        // Block until all written output has been sent to the device
-        if (-1 == tcdrain(fd)) {
-            merror(M_IODEVICE_MESSAGE_DOMAIN, "Serial port drain failed: %s", strerror(errno));
-        }
-        
-        disconnect();
-    }
 }
 
 
 bool ISCANDevice::initialize() {
-    if (!connect()) {
+    if (!serialPort.connect(path, baudRate)) {
         return false;
     }
     
@@ -81,78 +71,6 @@ bool ISCANDevice::initialize() {
     });
     
     return true;
-}
-
-
-bool ISCANDevice::connect() {
-    // Open the serial port read/write, with no controlling terminal, and don't wait for a connection.
-    // The O_NONBLOCK flag also causes subsequent I/O on the device to be non-blocking.
-    if (-1 == (fd = ::open(serialPort.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK))) {
-        merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot open serial port (%s): %s", serialPort.c_str(), strerror(errno));
-        return false;
-    }
-    
-    bool shouldClose = true;
-    BOOST_SCOPE_EXIT(&shouldClose, &fd) {
-        if (shouldClose) {
-            (void)::close(fd);
-            fd = -1;
-        }
-    } BOOST_SCOPE_EXIT_END
-    
-    // open() follows POSIX semantics: multiple open() calls to the same file will succeed
-    // unless the TIOCEXCL ioctl is issued.  This will prevent additional opens except by root-owned
-    // processes.
-    if (-1 == ioctl(fd, TIOCEXCL)) {
-        merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot obtain exclusive use of serial port: %s", strerror(errno));
-        return false;
-    }
-    
-    // Now that the device is open, clear the O_NONBLOCK flag so subsequent I/O will block
-    if (-1 == fcntl(fd, F_SETFL, 0)) {
-        merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot restore blocking I/O on serial port: %s", strerror(errno));
-        return false;
-    }
-    
-    // Get the current options and save them, so we can restore the default settings later
-    if (-1 == tcgetattr(fd, &origAttrs)) {
-        merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot obtain current serial port attributes: %s", strerror(errno));
-        return false;
-    }
-    
-    struct termios attrs = origAttrs;
-    cfmakeraw(&attrs);            // Set raw input (non-canonical) mode
-    attrs.c_cc[VMIN] = 0;         // Reads block until a single byte has been received
-    attrs.c_cc[VTIME] = 5;        //   or a 500ms timeout expires
-    cfsetspeed(&attrs, B115200);  // Set speed to 115200 baud
-    attrs.c_cflag |= CS8;         // Use 8-bit words
-    attrs.c_cflag &= ~PARENB;     // No parity
-    attrs.c_cflag &= ~CSTOPB;     // 1 stop bit
-    attrs.c_cflag |= CLOCAL;      // Ignore modem status lines
-    
-    // Cause the new options to take effect immediately
-    if (-1 == tcsetattr(fd, TCSANOW, &attrs)) {
-        merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot set serial port attributes: %s", strerror(errno));
-        return false;
-    }
-    
-    shouldClose = false;
-    
-    return true;
-}
-
-
-void ISCANDevice::disconnect() {
-    // Restore original options
-    if (-1 == tcsetattr(fd, TCSANOW, &origAttrs)) {
-        merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot restore previous serial port attributes: %s", strerror(errno));
-    }
-    
-    if (-1 == ::close(fd)) {
-        merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot close serial port: %s", strerror(errno));
-    }
-    
-    fd = -1;
 }
 
 
@@ -186,12 +104,8 @@ bool ISCANDevice::stopDeviceIO() {
 }
 
 
-bool ISCANDevice::sendCommand(std::uint8_t cmd) {
-    if (-1 == ::write(fd, &cmd, 1)) {
-        merror(M_IODEVICE_MESSAGE_DOMAIN, "Write to ISCAN device failed: %s", strerror(errno));
-        return false;
-    }
-    return true;
+inline bool ISCANDevice::sendCommand(std::uint8_t cmd) {
+    return (-1 != serialPort.write(&cmd, 1));
 }
 
 
@@ -201,21 +115,14 @@ void ISCANDevice::receiveData() {
     int currentOutputNumber = -1;
     
     while (continueReceivingData.test_and_set()) {
-        ssize_t result;
-        int errnoCopy;
-        {
-            lock_guard lock(mutex);
-            result = ::read(fd, reinterpret_cast<std::uint8_t *>(&word) + bytesRead, sizeof(word) - bytesRead);
-            errnoCopy = errno;
-        }
+        // Since this is the only thread that reads from the serial port, we don't need a lock here
+        auto result = serialPort.read(reinterpret_cast<std::uint8_t *>(&word) + bytesRead, sizeof(word) - bytesRead);
         
         if (-1 == result) {
             
-            merror(M_IODEVICE_MESSAGE_DOMAIN, "Read from ISCAN device failed: %s", strerror(errnoCopy));
-            
             mprintf(M_IODEVICE_MESSAGE_DOMAIN, "Attempting to reconnect to ISCAN device...");
-            disconnect();
-            if (!connect()) {
+            serialPort.disconnect();
+            if (!serialPort.connect(path, baudRate)) {
                 merror(M_IODEVICE_MESSAGE_DOMAIN, "Cannot reconnect to ISCAN device");
                 return;
             }

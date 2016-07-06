@@ -30,25 +30,23 @@ public:
     bool stopDeviceIO() override;
     
 private:
+    static const speed_t baudRate = B115200;
+    
     static std::string getOutputParameterName(std::size_t outputNumber);
     
-    bool connect();
-    void disconnect();
     bool sendCommand(std::uint8_t cmd);
     void receiveData();
     
-    const std::string serialPort;
+    const std::string path;
     const int startCommand;
     const int stopCommand;
+    SerialPort serialPort;
     
     static const std::size_t maxNumOutputs = 6;
     std::array<VariablePtr, maxNumOutputs> outputs;
     
-    int fd;
-    struct termios origAttrs;
-    
-    std::mutex mutex;
-    using lock_guard = std::lock_guard<decltype(mutex)>;
+    using lock_guard = std::lock_guard<std::mutex>;
+    lock_guard::mutex_type mutex;
     std::thread receiveDataThread;
     std::atomic_flag continueReceivingData;
     bool running;

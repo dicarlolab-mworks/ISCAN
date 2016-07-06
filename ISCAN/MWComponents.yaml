@@ -13,8 +13,14 @@ description: |
 parameters: 
   - 
     name: serial_port
-    required: yes
     example: /dev/tty.usbserial-FTH1RRH5
+    description: |
+        Filesystem path that represents the serial port to which the ISCAN
+        device is connected.
+
+        If omitted, MWorks looks for a single, connected serial device.  If it
+        finds one, it assumes it to be the desired ISCAN device and attempts to
+        connect.
   - 
     name: output_01
   - 
