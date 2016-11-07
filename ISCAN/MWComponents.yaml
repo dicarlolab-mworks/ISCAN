@@ -23,16 +23,22 @@ parameters:
         connect.
   - 
     name: output_01
+    description: Variable in which to store output 1
   - 
     name: output_02
+    description: Variable in which to store output 2
   - 
     name: output_03
+    description: Variable in which to store output 3
   - 
     name: output_04
+    description: Variable in which to store output 4
   - 
     name: output_05
+    description: Variable in which to store output 5
   - 
     name: output_06
+    description: Variable in which to store output 6
   - 
     name: start_command
     default: 128
