@@ -5,7 +5,6 @@ name: ISCAN Device
 signature: iodevice/iscan
 isa: IODevice
 platform: macos
-icon: smallIOFolder
 description: |
     Interface to an `ISCAN <http://www.iscaninc.com/>`_ eye tracking system.
 
