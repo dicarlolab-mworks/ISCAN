@@ -74,13 +74,13 @@
 		E121CC651CF3852500BF4331 /* MWComponents.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MWComponents.yaml; sourceTree = "<group>"; };
 		E13987471CEF5D7F00713832 /* ISCAN.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ISCAN.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		E139874A1CEF5D7F00713832 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E13987511CEF5E0500713832 /* Development.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Development.xcconfig; sourceTree = "<group>"; };
-		E13987521CEF5E0500713832 /* WARNING.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WARNING.txt; sourceTree = "<group>"; };
 		E13987551CEF5E5200713832 /* ISCANPlugin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ISCANPlugin.cpp; sourceTree = "<group>"; };
 		E13987641CEF61CB00713832 /* ISCAN-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ISCAN-Prefix.pch"; sourceTree = "<group>"; };
 		E13987651CEF628F00713832 /* MWorksCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MWorksCore.framework; path = /Library/Frameworks/MWorksCore.framework; sourceTree = "<absolute>"; };
 		E139876A1CEF64FA00713832 /* ISCANDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ISCANDevice.cpp; sourceTree = "<group>"; };
 		E139876B1CEF64FA00713832 /* ISCANDevice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ISCANDevice.hpp; sourceTree = "<group>"; };
+		E1F7696822BD4DD600024441 /* macOS_Plugin.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = macOS_Plugin.xcconfig; sourceTree = "<group>"; };
+		E1F7696922BD4DD600024441 /* macOS.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = macOS.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,8 +127,8 @@
 		E13987501CEF5DBC00713832 /* External Config */ = {
 			isa = PBXGroup;
 			children = (
-				E13987511CEF5E0500713832 /* Development.xcconfig */,
-				E13987521CEF5E0500713832 /* WARNING.txt */,
+				E1F7696922BD4DD600024441 /* macOS.xcconfig */,
+				E1F7696822BD4DD600024441 /* macOS_Plugin.xcconfig */,
 			);
 			name = "External Config";
 			path = "/Library/Application Support/MWorks/Developer/Xcode";
@@ -254,44 +254,25 @@
 /* Begin XCBuildConfiguration section */
 		E139874B1CEF5D7F00713832 /* Development */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E13987511CEF5E0500713832 /* Development.xcconfig */;
 			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				MTL_ENABLE_DEBUG_INFO = YES;
 			};
 			name = Development;
 		};
 		E139874E1CEF5D7F00713832 /* Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E1F7696822BD4DD600024441 /* macOS_Plugin.xcconfig */;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ISCAN/ISCAN-Prefix.pch";
 				INFOPLIST_FILE = ISCAN/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.mworks-project.ISCAN";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				WRAPPER_EXTENSION = bundle;
 			};
 			name = Development;
 		};
 		E13987591CEF5F9700713832 /* Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E1F7696922BD4DD600024441 /* macOS.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -299,6 +280,7 @@
 		};
 		E13987601CEF5FE200713832 /* Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E1F7696922BD4DD600024441 /* macOS.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
